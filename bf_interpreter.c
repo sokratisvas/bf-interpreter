@@ -61,10 +61,18 @@ void run_input(unsigned char* input, int input_len, unsigned char* memory) {
         switch (input[input_idx]) {
             case '>':
                 memory_idx++;
+                //Wrap around the tape
+                if (memory_idx == MEM_SIZE) {
+                    memory_idx = 0;
+                }
                 assert(memory_idx < MEM_SIZE && "error: out of range");
                 break;
             case '<':
                 memory_idx--;
+                //Wrap around the tape
+                if (memory_idx == -1) {
+                    memory_idx = MEM_SIZE - 1; 
+                }
                 assert(memory_idx >= 0 && "error: out of range");
                 break;
             case '+':
@@ -123,7 +131,6 @@ int main() {
 
     printf("running \"%s\" ...\n", bf_file);
     
-    // Clear Buffer
     int ch;
     while ((ch = getchar()) != '\n' && ch != EOF) { }
 
@@ -136,8 +143,10 @@ int main() {
         }
     }
     fclose(file);
+    
 
-    /* Read from input
+    // Read from input
+    /*
     while ((input[input_len++] = getchar()) != '\n' && input_len <= INPUT_SIZE) {}
     input_len--;
     */
